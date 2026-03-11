@@ -110,7 +110,7 @@ body {
 .hero-emblem {
   width: 120px;
   height: auto;
-  margin-bottom: 28px;
+  margin-bottom: 48px;
   filter: drop-shadow(0 4px 24px rgba(134, 0, 41, 0.3));
   animation: fadeUp 0.8s ease-out 0.1s both;
 }
