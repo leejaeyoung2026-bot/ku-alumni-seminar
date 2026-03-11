@@ -3,7 +3,7 @@
    ============================================ */
 
 // ---- CONFIG ----
-const WORKER_URL = 'YOUR_WORKER_URL'; // e.g. https://ku-seminar-api.your-id.workers.dev
+const WORKER_URL = 'https://ku-seminar-api.leejaeyoung2026.workers.dev'; // e.g. https://ku-seminar-api.your-id.workers.dev
 
 // ---- API Helpers ----
 async function gasFetch(params) {
