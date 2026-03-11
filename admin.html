@@ -607,9 +607,19 @@
 
     const dPct = dinner / total, nPct = noDinner / total, uPct = undecided / total;
 
-    document.getElementById('donutDinner').setAttribute('stroke-dasharray', `${dPct * C} ${C}`);
-    document.getElementById('donutNoDinner').setAttribute('stroke-dasharray', `${(dPct + nPct) * C} ${C}`);
-    document.getElementById('donutUndecided').setAttribute('stroke-dasharray', `${(dPct + nPct + uPct) * C} ${C}`);
+    const dLen = dPct * C, nLen = nPct * C, uLen = uPct * C;
+
+    const donutDinner = document.getElementById('donutDinner');
+    donutDinner.setAttribute('stroke-dasharray', `${dLen} ${C - dLen}`);
+    donutDinner.setAttribute('stroke-dashoffset', '0');
+
+    const donutNoDinner = document.getElementById('donutNoDinner');
+    donutNoDinner.setAttribute('stroke-dasharray', `${nLen} ${C - nLen}`);
+    donutNoDinner.setAttribute('stroke-dashoffset', `${-dLen}`);
+
+    const donutUndecided = document.getElementById('donutUndecided');
+    donutUndecided.setAttribute('stroke-dasharray', `${uLen} ${C - uLen}`);
+    donutUndecided.setAttribute('stroke-dashoffset', `${-(dLen + nLen)}`);
 
     // Bar chart — group by generation
     const genMap = {};

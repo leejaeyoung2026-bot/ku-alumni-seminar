@@ -281,6 +281,32 @@ document.querySelectorAll('.timeline-item').forEach(item => {
   observer.observe(item);
 });
 
+// ---- Countdown Timer ----
+function updateCountdown() {
+  const target = new Date('2026-05-02T15:00:00+09:00');
+  const now = new Date();
+  const diff = target - now;
+  if (diff <= 0) {
+    document.getElementById('countdown').style.display = 'none';
+    return;
+  }
+  document.getElementById('cdDays').textContent = String(Math.floor(diff / 86400000)).padStart(2, '0');
+  document.getElementById('cdHours').textContent = String(Math.floor((diff % 86400000) / 3600000)).padStart(2, '0');
+  document.getElementById('cdMin').textContent = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+}
+updateCountdown();
+setInterval(updateCountdown, 60000);
+
+// ---- Attendee Counter ----
+(async function loadStats() {
+  try {
+    const res = await fetch(`${WORKER_URL}/stats`);
+    const data = await res.json();
+    const el = document.getElementById('attendeeCount');
+    if (el && data.count !== undefined) el.textContent = data.count;
+  } catch {}
+})();
+
 // ---- Smooth scroll for CTA ----
 document.querySelector('.hero-cta').addEventListener('click', (e) => {
   e.preventDefault();

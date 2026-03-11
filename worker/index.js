@@ -132,9 +132,10 @@ export default {
         })
       );
 
+      const esc = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
       const header = '이름,연락처,기수,소속,저녁식사,등록일시,수정일시';
       const rows = records.filter(Boolean).map(r =>
-        [r.name, r.phone, r.generation, r.affiliation, r.dinner, r.registeredAt, r.updatedAt].join(',')
+        [r.name, r.phone, r.generation, r.affiliation, r.dinner, r.registeredAt, r.updatedAt].map(esc).join(',')
       );
       const csv = '\uFEFF' + [header, ...rows].join('\n'); // BOM for Excel
 
@@ -161,6 +162,12 @@ export default {
       await saveIndex(env.REGISTRATIONS, index.filter(p => p !== phone));
 
       return json({ success: true });
+    }
+
+    // ── GET /stats ──────────────────────────────────────────
+    if (path === '/stats' && method === 'GET') {
+      const index = await getIndex(env.REGISTRATIONS);
+      return json({ count: index.length });
     }
 
     return json({ error: 'not found' }, 404);
