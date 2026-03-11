@@ -9,10 +9,8 @@
  *    - 액세스 권한: 모든 사용자
  * 4. 배포 URL을 js/app.js의 API_URL에 입력
  *
- * 중요: POST는 CORS 문제가 있으므로 모든 요청을 GET으로 처리합니다.
- * - 조회: ?action=lookup&phone=010-xxxx-xxxx
- * - 등록: ?action=register&name=...&phone=...&generation=...&affiliation=...&dinner=...
- * - 수정: ?action=update&name=...&phone=...&generation=...&affiliation=...&dinner=...
+ * JSONP 방식으로 CORS 문제를 완전히 우회합니다.
+ * callback 파라미터가 있으면 JSONP, 없으면 JSON 응답.
  */
 
 const SHEET_NAME = 'Sheet1';
@@ -38,68 +36,58 @@ function doGet(e) {
   const sheet = getSheet();
   const data = sheet.getDataRange().getValues();
   const now = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+  var result;
 
-  // 조회
   if (action === 'lookup') {
-    for (let i = 1; i < data.length; i++) {
+    result = { found: false };
+    for (var i = 1; i < data.length; i++) {
       if (data[i][1] === p.phone) {
-        return jsonResponse({
+        result = {
           found: true,
           name: data[i][0],
           phone: data[i][1],
           generation: String(data[i][2]),
           affiliation: data[i][3],
           dinner: data[i][4],
-        });
+        };
+        break;
       }
     }
-    return jsonResponse({ found: false });
-  }
-
-  // 등록
-  if (action === 'register') {
-    for (let i = 1; i < data.length; i++) {
+  } else if (action === 'register') {
+    result = { success: true };
+    for (var i = 1; i < data.length; i++) {
       if (data[i][1] === p.phone) {
-        return jsonResponse({ success: false, duplicate: true });
+        result = { success: false, duplicate: true };
+        break;
       }
     }
-    sheet.appendRow([
-      p.name,
-      p.phone,
-      p.generation,
-      p.affiliation,
-      p.dinner,
-      now,
-      ''
-    ]);
-    return jsonResponse({ success: true });
-  }
-
-  // 수정
-  if (action === 'update') {
-    for (let i = 1; i < data.length; i++) {
+    if (result.success) {
+      sheet.appendRow([p.name, p.phone, p.generation, p.affiliation, p.dinner, now, '']);
+    }
+  } else if (action === 'update') {
+    result = { success: false, message: 'not found' };
+    for (var i = 1; i < data.length; i++) {
       if (data[i][1] === p.phone) {
-        const row = i + 1;
+        var row = i + 1;
         sheet.getRange(row, 1, 1, 7).setValues([[
-          p.name,
-          p.phone,
-          p.generation,
-          p.affiliation,
-          p.dinner,
-          data[i][5],
-          now
+          p.name, p.phone, p.generation, p.affiliation, p.dinner, data[i][5], now
         ]]);
-        return jsonResponse({ success: true });
+        result = { success: true };
+        break;
       }
     }
-    return jsonResponse({ success: false, message: 'not found' });
+  } else {
+    result = { success: false, message: 'invalid action' };
   }
 
-  return jsonResponse({ success: false, message: 'invalid action' });
-}
+  // JSONP 지원
+  if (p.callback) {
+    return ContentService
+      .createTextOutput(p.callback + '(' + JSON.stringify(result) + ')')
+      .setMimeType(ContentService.MimeType.JAVASCRIPT);
+  }
 
-function jsonResponse(obj) {
   return ContentService
-    .createTextOutput(JSON.stringify(obj))
+    .createTextOutput(JSON.stringify(result))
     .setMimeType(ContentService.MimeType.JSON);
 }

@@ -6,16 +6,39 @@
 // Google Apps Script Web App URL을 여기에 입력하세요
 const API_URL = 'https://script.google.com/macros/s/AKfycbxKa6bj9Xx5LMFc-SiGVs-XwfXsVc66Z2J4HTjpiWdy7sCsLJrDtOlh8S9hkuK0v-qygg/exec';
 
-// ---- Google Apps Script Helper ----
-// CORS 문제를 피하기 위해 모든 요청을 GET + URL params로 처리
-function gasURL(params) {
-  const qs = new URLSearchParams(params).toString();
-  return `${API_URL}?${qs}`;
-}
+// ---- Google Apps Script Helper (JSONP) ----
+// <script> 태그는 CORS 제한을 받지 않으므로 JSONP로 완전 우회
+function gasFetch(params) {
+  return new Promise((resolve, reject) => {
+    const callbackName = '_gas_cb_' + Date.now() + Math.random().toString(36).slice(2);
+    params.callback = callbackName;
+    const qs = new URLSearchParams(params).toString();
+    const script = document.createElement('script');
+    script.src = `${API_URL}?${qs}`;
 
-async function gasFetch(params) {
-  const res = await fetch(gasURL(params));
-  return res.json();
+    const timeout = setTimeout(() => {
+      cleanup();
+      reject(new Error('timeout'));
+    }, 15000);
+
+    function cleanup() {
+      clearTimeout(timeout);
+      delete window[callbackName];
+      if (script.parentNode) script.parentNode.removeChild(script);
+    }
+
+    window[callbackName] = (data) => {
+      cleanup();
+      resolve(data);
+    };
+
+    script.onerror = () => {
+      cleanup();
+      reject(new Error('network error'));
+    };
+
+    document.head.appendChild(script);
+  });
 }
 
 // ---- DOM Elements ----
