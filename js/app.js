@@ -6,6 +6,18 @@
 // Google Apps Script Web App URL을 여기에 입력하세요
 const API_URL = 'https://script.google.com/macros/s/AKfycbxKa6bj9Xx5LMFc-SiGVs-XwfXsVc66Z2J4HTjpiWdy7sCsLJrDtOlh8S9hkuK0v-qygg/exec';
 
+// ---- Google Apps Script Helper ----
+// CORS 문제를 피하기 위해 모든 요청을 GET + URL params로 처리
+function gasURL(params) {
+  const qs = new URLSearchParams(params).toString();
+  return `${API_URL}?${qs}`;
+}
+
+async function gasFetch(params) {
+  const res = await fetch(gasURL(params));
+  return res.json();
+}
+
 // ---- DOM Elements ----
 const regForm = document.getElementById('regForm');
 const successPanel = document.getElementById('successPanel');
@@ -38,7 +50,6 @@ function handlePhoneInput(e) {
   const pos = e.target.selectionStart;
   const before = e.target.value;
   e.target.value = formatPhone(e.target.value);
-  // Adjust cursor position after formatting
   const diff = e.target.value.length - before.length;
   e.target.setSelectionRange(pos + diff, pos + diff);
 }
@@ -75,8 +86,7 @@ btnLookup.addEventListener('click', async () => {
   btnLookup.disabled = true;
 
   try {
-    const res = await fetch(`${API_URL}?phone=${encodeURIComponent(phone)}`);
-    const data = await res.json();
+    const data = await gasFetch({ action: 'lookup', phone });
 
     if (data.found) {
       nameInput.value = data.name || '';
@@ -84,7 +94,6 @@ btnLookup.addEventListener('click', async () => {
       generationInput.value = data.generation || '';
       affiliationInput.value = data.affiliation || '';
 
-      // Set dinner radio
       const dinnerRadios = document.querySelectorAll('input[name="dinner"]');
       dinnerRadios.forEach(r => {
         r.checked = r.value === data.dinner;
@@ -94,7 +103,6 @@ btnLookup.addEventListener('click', async () => {
       btnSubmit.querySelector('.btn-text').textContent = '수정 완료';
       showLookupMessage('기존 정보를 불러왔습니다. 수정 후 제출해주세요.', 'success');
 
-      // Scroll to form
       regForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } else {
       showLookupMessage('등록된 정보가 없습니다. 새로 신청해주세요.', 'error');
@@ -115,12 +123,10 @@ function showLookupMessage(msg, type) {
 regForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  // Validate
   if (!validateForm()) return;
 
-  // Collect data
   const dinner = document.querySelector('input[name="dinner"]:checked');
-  const formData = {
+  const params = {
     action: isEditMode ? 'update' : 'register',
     name: nameInput.value.trim(),
     phone: phoneInput.value.trim(),
@@ -129,17 +135,10 @@ regForm.addEventListener('submit', async (e) => {
     dinner: dinner ? dinner.value : '',
   };
 
-  // Show loading
   setSubmitLoading(true);
 
   try {
-    const res = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify(formData),
-    });
-
-    const result = await res.json();
+    const result = await gasFetch(params);
 
     if (result.success) {
       successTitle.textContent = isEditMode
@@ -218,7 +217,6 @@ function clearErrors() {
   }
 }
 
-// Clear error on input
 regForm.addEventListener('input', (e) => {
   if (e.target.classList.contains('error')) {
     e.target.classList.remove('error');
@@ -255,11 +253,6 @@ btnAnother.addEventListener('click', () => {
 });
 
 // ---- Scroll Animations ----
-const observerOptions = {
-  threshold: 0.15,
-  rootMargin: '0px 0px -40px 0px',
-};
-
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -267,7 +260,7 @@ const observer = new IntersectionObserver((entries) => {
       observer.unobserve(entry.target);
     }
   });
-}, observerOptions);
+}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
 
 document.querySelectorAll('.timeline-item').forEach(item => {
   observer.observe(item);

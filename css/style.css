@@ -162,7 +162,7 @@ body {
 }
 
 .hero-info {
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
   gap: 16px;
   margin-bottom: 36px;
@@ -173,7 +173,7 @@ body {
   display: flex;
   align-items: center;
   gap: 14px;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .info-icon {
@@ -775,10 +775,12 @@ body {
     font-size: 52px;
   }
 
+  .hero-emblem {
+    width: 140px;
+  }
+
   .hero-info {
-    flex-direction: row;
-    justify-content: center;
-    gap: 32px;
+    gap: 20px;
   }
 
   .section-title {
