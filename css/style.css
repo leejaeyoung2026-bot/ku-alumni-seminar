@@ -573,7 +573,8 @@ body {
 
 .fee-grid {
   display: flex;
-  gap: 12px;
+  flex-direction: column;
+  gap: 8px;
   margin-bottom: 8px;
 }
 
@@ -1179,6 +1180,11 @@ body {
     font-size: 32px;
   }
 
+  .fee-grid {
+    flex-direction: row;
+    gap: 12px;
+  }
+
   .speakers-grid {
     grid-template-columns: 1fr 1fr;
     gap: 16px;
@@ -1267,11 +1273,6 @@ body {
 
   .cd-num {
     font-size: 20px;
-  }
-
-  .fee-grid {
-    flex-direction: column;
-    gap: 8px;
   }
 
   .radio-group {
