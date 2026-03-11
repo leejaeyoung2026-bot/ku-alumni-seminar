@@ -107,6 +107,14 @@ body {
   animation: fadeUp 1s ease-out;
 }
 
+.hero-emblem {
+  width: 120px;
+  height: auto;
+  margin-bottom: 28px;
+  filter: drop-shadow(0 4px 24px rgba(134, 0, 41, 0.3));
+  animation: fadeUp 0.8s ease-out 0.1s both;
+}
+
 .hero-badge {
   display: inline-block;
   padding: 6px 18px;

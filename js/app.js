@@ -4,7 +4,7 @@
 
 // ---- CONFIG ----
 // Google Apps Script Web App URL을 여기에 입력하세요
-const API_URL = 'YOUR_APPS_SCRIPT_WEB_APP_URL';
+const API_URL = 'https://script.google.com/macros/s/AKfycbxKa6bj9Xx5LMFc-SiGVs-XwfXsVc66Z2J4HTjpiWdy7sCsLJrDtOlh8S9hkuK0v-qygg/exec';
 
 // ---- DOM Elements ----
 const regForm = document.getElementById('regForm');
