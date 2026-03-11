@@ -713,12 +713,11 @@ body {
   border-top: 1px solid var(--border);
 }
 
-.footer-logo {
-  font-size: 14px;
-  font-weight: 900;
-  letter-spacing: 4px;
-  color: var(--crimson-light);
-  margin-bottom: 8px;
+.footer-emblem {
+  width: 64px;
+  height: auto;
+  margin-bottom: 16px;
+  opacity: 0.7;
 }
 
 .footer-text {
