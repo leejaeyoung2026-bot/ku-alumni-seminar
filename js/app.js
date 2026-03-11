@@ -3,42 +3,34 @@
    ============================================ */
 
 // ---- CONFIG ----
-// Google Apps Script Web App URL을 여기에 입력하세요
-const API_URL = 'https://script.google.com/macros/s/AKfycbxKa6bj9Xx5LMFc-SiGVs-XwfXsVc66Z2J4HTjpiWdy7sCsLJrDtOlh8S9hkuK0v-qygg/exec';
+const WORKER_URL = 'YOUR_WORKER_URL'; // e.g. https://ku-seminar-api.your-id.workers.dev
 
-// ---- Google Apps Script Helper (JSONP) ----
-// <script> 태그는 CORS 제한을 받지 않으므로 JSONP로 완전 우회
-function gasFetch(params) {
-  return new Promise((resolve, reject) => {
-    const callbackName = '_gas_cb_' + Date.now() + Math.random().toString(36).slice(2);
-    params.callback = callbackName;
-    const qs = new URLSearchParams(params).toString();
-    const script = document.createElement('script');
-    script.src = `${API_URL}?${qs}`;
+// ---- API Helpers ----
+async function gasFetch(params) {
+  const { action, ...rest } = params;
 
-    const timeout = setTimeout(() => {
-      cleanup();
-      reject(new Error('timeout'));
-    }, 15000);
+  if (action === 'lookup') {
+    const res = await fetch(`${WORKER_URL}/lookup?phone=${encodeURIComponent(rest.phone)}`);
+    return res.json();
+  }
 
-    function cleanup() {
-      clearTimeout(timeout);
-      delete window[callbackName];
-      if (script.parentNode) script.parentNode.removeChild(script);
-    }
+  if (action === 'register') {
+    const res = await fetch(`${WORKER_URL}/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(rest),
+    });
+    return res.json();
+  }
 
-    window[callbackName] = (data) => {
-      cleanup();
-      resolve(data);
-    };
-
-    script.onerror = () => {
-      cleanup();
-      reject(new Error('network error'));
-    };
-
-    document.head.appendChild(script);
-  });
+  if (action === 'update') {
+    const res = await fetch(`${WORKER_URL}/update`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(rest),
+    });
+    return res.json();
+  }
 }
 
 // ---- DOM Elements ----
