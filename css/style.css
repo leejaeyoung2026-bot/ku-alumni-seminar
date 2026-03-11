@@ -162,19 +162,17 @@ body {
 }
 
 .hero-info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 36px;
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 16px 14px;
+  justify-content: center;
+  width: fit-content;
+  margin: 0 auto 36px;
   animation: fadeUp 0.8s ease-out 1s both;
 }
 
 .info-item {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  justify-content: flex-start;
+  display: contents;
 }
 
 .info-icon {
@@ -186,7 +184,7 @@ body {
   background: rgba(134, 0, 41, 0.15);
   border-radius: 12px;
   color: var(--crimson-light);
-  flex-shrink: 0;
+  align-self: center;
 }
 
 .info-label {
@@ -781,7 +779,7 @@ body {
   }
 
   .hero-info {
-    gap: 20px;
+    gap: 20px 14px;
   }
 
   .section-title {
