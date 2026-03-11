@@ -103,14 +103,16 @@ body {
 .hero-content {
   position: relative;
   z-index: 1;
+  width: 100%;
   text-align: center;
   animation: fadeUp 1s ease-out;
 }
 
 .hero-emblem {
+  display: block;
   width: 120px;
   height: auto;
-  margin-bottom: 72px;
+  margin: 0 auto 48px;
   filter: drop-shadow(0 4px 24px rgba(134, 0, 41, 0.3));
   animation: fadeUp 0.8s ease-out 0.1s both;
 }
@@ -124,7 +126,7 @@ body {
   font-weight: 600;
   letter-spacing: 3px;
   color: var(--gold);
-  margin-bottom: 40px;
+  margin-bottom: 32px;
   animation: fadeUp 1s ease-out 0.2s both;
 }
 
@@ -776,7 +778,7 @@ body {
 
   .hero-emblem {
     width: 140px;
-    margin-bottom: 88px;
+    margin-bottom: 48px;
   }
 
   .hero-info {
