@@ -331,7 +331,7 @@ body {
 
 .timeline-dot {
   position: absolute;
-  left: -30px;
+  left: -24px;
   top: 24px;
   width: 14px;
   height: 14px;
@@ -795,6 +795,10 @@ body {
 
   .timeline {
     padding-left: 32px;
+  }
+
+  .timeline-dot {
+    left: -32px;
   }
 
   .hero-cta:hover {
