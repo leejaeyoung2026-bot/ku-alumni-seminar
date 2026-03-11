@@ -126,7 +126,7 @@ body {
   font-weight: 600;
   letter-spacing: 3px;
   color: var(--gold);
-  margin-bottom: 32px;
+  margin-bottom: 20px;
   animation: fadeUp 1s ease-out 0.2s both;
 }
 
