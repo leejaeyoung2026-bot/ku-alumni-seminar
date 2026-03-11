@@ -275,6 +275,13 @@ body {
   letter-spacing: -0.5px;
 }
 
+.section-desc {
+  margin-top: 12px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
 .timeline {
   position: relative;
   padding-left: 24px;
