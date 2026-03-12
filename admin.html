@@ -445,9 +445,9 @@
       <div class="donut-wrap">
         <svg class="donut-svg" viewBox="0 0 200 200">
           <circle cx="100" cy="100" r="70" stroke="rgba(255,255,255,0.08)" stroke-width="28" fill="none"/>
-          <circle id="donutUndecided" cx="100" cy="100" r="70" stroke="#e0b040" stroke-dasharray="0 440" transform="rotate(-90 100 100)"/>
-          <circle id="donutNoDinner" cx="100" cy="100" r="70" stroke="#ef4444" stroke-dasharray="0 440" transform="rotate(-90 100 100)"/>
-          <circle id="donutDinner" cx="100" cy="100" r="70" stroke="#22c55e" stroke-dasharray="0 440" transform="rotate(-90 100 100)"/>
+          <circle id="donutUndecided" cx="100" cy="100" r="70" stroke="#e0b040" style="stroke-dasharray:0 440;stroke-dashoffset:0" transform="rotate(-90 100 100)"/>
+          <circle id="donutNoDinner" cx="100" cy="100" r="70" stroke="#ef4444" style="stroke-dasharray:0 440;stroke-dashoffset:0" transform="rotate(-90 100 100)"/>
+          <circle id="donutDinner" cx="100" cy="100" r="70" stroke="#22c55e" style="stroke-dasharray:0 440;stroke-dashoffset:0" transform="rotate(-90 100 100)"/>
           <text class="donut-center" x="100" y="96" text-anchor="middle" id="donutTotal">0</text>
           <text class="donut-center-label" x="100" y="114" text-anchor="middle">전체</text>
         </svg>
@@ -614,16 +614,16 @@
     const dLen = dPct * C, nLen = nPct * C, uLen = uPct * C;
 
     const donutDinner = document.getElementById('donutDinner');
-    donutDinner.setAttribute('stroke-dasharray', `${dLen} ${C - dLen}`);
-    donutDinner.setAttribute('stroke-dashoffset', '0');
+    donutDinner.style.strokeDasharray = `${dLen} ${C - dLen}`;
+    donutDinner.style.strokeDashoffset = '0';
 
     const donutNoDinner = document.getElementById('donutNoDinner');
-    donutNoDinner.setAttribute('stroke-dasharray', `${nLen} ${C - nLen}`);
-    donutNoDinner.setAttribute('stroke-dashoffset', `${-dLen}`);
+    donutNoDinner.style.strokeDasharray = `${nLen} ${C - nLen}`;
+    donutNoDinner.style.strokeDashoffset = `${C - dLen}`;
 
     const donutUndecided = document.getElementById('donutUndecided');
-    donutUndecided.setAttribute('stroke-dasharray', `${uLen} ${C - uLen}`);
-    donutUndecided.setAttribute('stroke-dashoffset', `${-(dLen + nLen)}`);
+    donutUndecided.style.strokeDasharray = `${uLen} ${C - uLen}`;
+    donutUndecided.style.strokeDashoffset = `${C - dLen - nLen}`;
 
     // Bar chart — group by generation
     const genMap = {};
