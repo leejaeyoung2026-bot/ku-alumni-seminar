@@ -261,61 +261,6 @@
       letter-spacing: 1px;
     }
 
-    .donut-wrap {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 32px;
-    }
-
-    .donut-svg {
-      width: 160px;
-      height: 160px;
-      flex-shrink: 0;
-    }
-
-    .donut-svg circle {
-      fill: none;
-      stroke-width: 28;
-      transform-origin: center;
-      transition: stroke-dasharray 0.6s ease;
-    }
-
-    .donut-center {
-      font-size: 28px;
-      font-weight: 800;
-      fill: var(--text);
-    }
-
-    .donut-center-label {
-      font-size: 11px;
-      fill: var(--text-muted);
-    }
-
-    .legend {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .legend-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 3px;
-      flex-shrink: 0;
-    }
-
-    .legend-label {
-      font-size: 13px;
-      color: var(--text-secondary);
-    }
-
     .legend-value {
       font-size: 15px;
       font-weight: 700;
@@ -441,36 +386,6 @@
 
   <div class="charts-section" id="chartsSection">
     <div class="chart-card">
-      <div class="chart-title">저녁식사 참석 현황</div>
-      <div class="donut-wrap">
-        <svg class="donut-svg" viewBox="0 0 200 200">
-          <circle cx="100" cy="100" r="70" stroke="rgba(255,255,255,0.08)" stroke-width="28" fill="none"/>
-          <circle id="donutUndecided" cx="100" cy="100" r="70" stroke="#e0b040" style="stroke-dasharray:0 440;stroke-dashoffset:0" transform="rotate(-90 100 100)"/>
-          <circle id="donutNoDinner" cx="100" cy="100" r="70" stroke="#ef4444" style="stroke-dasharray:0 440;stroke-dashoffset:0" transform="rotate(-90 100 100)"/>
-          <circle id="donutDinner" cx="100" cy="100" r="70" stroke="#22c55e" style="stroke-dasharray:0 440;stroke-dashoffset:0" transform="rotate(-90 100 100)"/>
-          <text class="donut-center" x="100" y="96" text-anchor="middle" id="donutTotal">0</text>
-          <text class="donut-center-label" x="100" y="114" text-anchor="middle">전체</text>
-        </svg>
-        <div class="legend">
-          <div class="legend-item">
-            <div class="legend-dot" style="background:#22c55e"></div>
-            <span class="legend-label">참석</span>
-            <span class="legend-value" id="legendDinner">0</span>
-          </div>
-          <div class="legend-item">
-            <div class="legend-dot" style="background:#ef4444"></div>
-            <span class="legend-label">불참</span>
-            <span class="legend-value" id="legendNoDinner">0</span>
-          </div>
-          <div class="legend-item">
-            <div class="legend-dot" style="background:#e0b040"></div>
-            <span class="legend-label">미정</span>
-            <span class="legend-value" id="legendUndecided">0</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="chart-card">
       <div class="chart-title">학번별 참석 현황</div>
       <div class="bar-chart" id="barChart"></div>
     </div>
@@ -560,7 +475,7 @@
     document.getElementById('statNoDinner').textContent = noDinner;
     document.getElementById('statUndecided').textContent = undecided;
 
-    renderCharts(records, dinner, noDinner, undecided);
+    renderCharts(records);
 
     if (!records.length) {
       document.getElementById('tableEmpty').style.display = 'block';
@@ -592,38 +507,13 @@
   }
 
   // ── Charts ─────────────────────────────────────────────
-  function renderCharts(records, dinner, noDinner, undecided) {
+  function renderCharts(records) {
     const section = document.getElementById('chartsSection');
     if (!records.length) {
       section.style.display = 'none';
       return;
     }
     section.style.display = 'grid';
-
-    const total = records.length;
-    const C = 2 * Math.PI * 70; // ~439.8
-
-    // Donut
-    document.getElementById('donutTotal').textContent = total;
-    document.getElementById('legendDinner').textContent = dinner;
-    document.getElementById('legendNoDinner').textContent = noDinner;
-    document.getElementById('legendUndecided').textContent = undecided;
-
-    const dPct = dinner / total, nPct = noDinner / total, uPct = undecided / total;
-
-    const dLen = dPct * C, nLen = nPct * C, uLen = uPct * C;
-
-    const donutDinner = document.getElementById('donutDinner');
-    donutDinner.style.strokeDasharray = `${dLen} ${C - dLen}`;
-    donutDinner.style.strokeDashoffset = '0';
-
-    const donutNoDinner = document.getElementById('donutNoDinner');
-    donutNoDinner.style.strokeDasharray = `${nLen} ${C - nLen}`;
-    donutNoDinner.style.strokeDashoffset = `${C - dLen}`;
-
-    const donutUndecided = document.getElementById('donutUndecided');
-    donutUndecided.style.strokeDasharray = `${uLen} ${C - uLen}`;
-    donutUndecided.style.strokeDashoffset = `${C - dLen - nLen}`;
 
     // Bar chart — group by generation
     const genMap = {};
