@@ -237,6 +237,14 @@
 
     .btn-del:hover { background: #c0392b; color: white; }
 
+    /* ── Payment checkbox ── */
+    .paid-check {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--crimson);
+      cursor: pointer;
+    }
+
     /* ── Charts ── */
     .charts-section {
       display: none;
@@ -382,6 +390,10 @@
       <div class="stat-num" id="statUndecided">-</div>
       <div class="stat-label">저녁 미정</div>
     </div>
+    <div class="stat-item">
+      <div class="stat-num" id="statPaid">-</div>
+      <div class="stat-label">입금 완료</div>
+    </div>
   </div>
 
   <div class="charts-section" id="chartsSection">
@@ -406,6 +418,7 @@
           <th>학번</th>
           <th>소속</th>
           <th>저녁식사</th>
+          <th>입금</th>
           <th>등록일시</th>
           <th>수정일시</th>
           <th></th>
@@ -470,10 +483,12 @@
     const dinner = records.filter(r => r.dinner === '참석').length;
     const noDinner = records.filter(r => r.dinner === '불참').length;
     const undecided = records.filter(r => r.dinner === '미정').length;
+    const paid = records.filter(r => r.paid).length;
     document.getElementById('statTotal').textContent = records.length;
     document.getElementById('statDinner').textContent = dinner;
     document.getElementById('statNoDinner').textContent = noDinner;
     document.getElementById('statUndecided').textContent = undecided;
+    document.getElementById('statPaid').textContent = paid;
 
     renderCharts(records);
 
@@ -494,6 +509,10 @@
           <span class="badge ${r.dinner === '참석' ? 'badge-dinner' : r.dinner === '미정' ? 'badge-undecided' : 'badge-no-dinner'}">
             ${r.dinner}
           </span>
+        </td>
+        <td style="text-align:center">
+          <input type="checkbox" class="paid-check" ${r.paid ? 'checked' : ''}
+            onchange="togglePaid('${r.phone}', this)">
         </td>
         <td style="color:var(--text-secondary);font-size:12px">${r.registeredAt}</td>
         <td style="color:var(--text-muted);font-size:12px">${r.updatedAt || '-'}</td>
@@ -563,6 +582,28 @@
           <div class="bar-count">${affMap[a]}</div>
         </div>`;
     }).join('');
+  }
+
+  // ── Toggle Paid ─────────────────────────────────────────
+  async function togglePaid(phone, checkbox) {
+    try {
+      const res = await fetch(`${WORKER_URL}/admin/paid?key=${encodeURIComponent(adminKey)}&phone=${encodeURIComponent(phone)}`, {
+        method: 'PUT',
+      });
+      const data = await res.json();
+      if (!data.success) {
+        checkbox.checked = !checkbox.checked;
+        alert('입금 상태 변경 실패');
+        return;
+      }
+      // Update paid stat without full reload
+      const statEl = document.getElementById('statPaid');
+      const current = parseInt(statEl.textContent) || 0;
+      statEl.textContent = data.paid ? current + 1 : current - 1;
+    } catch {
+      checkbox.checked = !checkbox.checked;
+      alert('서버 연결 실패');
+    }
   }
 
   // ── Delete ───────────────────────────────────────────────

@@ -118,6 +118,25 @@ export default {
       return json({ success: true, count: records.length, records: records.filter(Boolean) });
     }
 
+    // ── PUT /admin/paid?key=...&phone=... ────────────────────
+    if (path === '/admin/paid' && method === 'PUT') {
+      if (url.searchParams.get('key') !== env.ADMIN_KEY) {
+        return json({ error: 'unauthorized' }, 401);
+      }
+
+      const phone = url.searchParams.get('phone');
+      if (!phone) return json({ success: false, message: 'phone required' }, 400);
+
+      const raw = await env.REGISTRATIONS.get(phone);
+      if (!raw) return json({ success: false, message: 'not found' }, 404);
+
+      const record = JSON.parse(raw);
+      record.paid = !record.paid;
+      await env.REGISTRATIONS.put(phone, JSON.stringify(record));
+
+      return json({ success: true, paid: record.paid });
+    }
+
     // ── GET /admin/csv?key=... ───────────────────────────────
     if (path === '/admin/csv' && method === 'GET') {
       if (url.searchParams.get('key') !== env.ADMIN_KEY) {
@@ -133,9 +152,9 @@ export default {
       );
 
       const esc = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
-      const header = '이름,연락처,기수,소속,저녁식사,등록일시,수정일시';
+      const header = '이름,연락처,기수,소속,저녁식사,입금여부,등록일시,수정일시';
       const rows = records.filter(Boolean).map(r =>
-        [r.name, r.phone, r.generation, r.affiliation, r.dinner, r.registeredAt, r.updatedAt].map(esc).join(',')
+        [r.name, r.phone, r.generation, r.affiliation, r.dinner, r.paid ? 'O' : 'X', r.registeredAt, r.updatedAt].map(esc).join(',')
       );
       const csv = '\uFEFF' + [header, ...rows].join('\n'); // BOM for Excel
 
