@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OPENING · 2026 고대약대 교우회 회사·학계지부 세미나</title>
+<link rel="icon" type="image/png" href="img/emblem.png">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
+<style>
+  :root{
+    /* OKLCH warm system — 60% cream / 30% warm dark text / 10% crimson accent + peach surface */
+    --bg:oklch(96.5% 0.016 70);          /* warm cream */
+    --bg-2:oklch(92% 0.028 55);          /* peach-tinted surface */
+    --ink:oklch(26% 0.045 22);           /* warm red-brown dark, not "old printed black" */
+    --ink-strong:oklch(20% 0.05 22);     /* one notch deeper for headlines */
+    --ink-dim:oklch(50% 0.035 22);       /* warm dim */
+    --ink-faint:oklch(74% 0.025 32);     /* warm faint, decorative only */
+    --crimson:oklch(64% 0.21 18);        /* vivid bright crimson */
+    --crimson-deep:oklch(52% 0.21 18);   /* deeper variant */
+    --peach:oklch(80% 0.13 48);          /* warm peach */
+    --peach-soft:oklch(88% 0.07 50);     /* soft peach surface tint */
+    --rule:oklch(86% 0.018 30);          /* warm rule */
+    --serif:'Pretendard Variable', Pretendard, system-ui, -apple-system, sans-serif;
+    --sans:'Pretendard Variable', Pretendard, system-ui, -apple-system, sans-serif;
+    --ease:cubic-bezier(0.25, 1, 0.5, 1);
+    --ease-soft:cubic-bezier(0.33, 1, 0.68, 1);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;width:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  ::selection{background:var(--crimson);color:var(--ink)}
+
+  /* Stage */
+  .deck{position:fixed;inset:0;overflow:hidden}
+  .slide{position:absolute;inset:0;display:flex;opacity:0;visibility:hidden;transition:opacity .8s var(--ease), transform .8s var(--ease);transform:scale(1.015);pointer-events:none}
+  .slide.is-active{opacity:1;visibility:visible;transform:scale(1);pointer-events:auto}
+  .slide.is-leaving{opacity:0;transform:scale(.992);transition:opacity .55s var(--ease), transform .55s var(--ease)}
+
+  /* Slide canvas — internal padding scales with viewport */
+  .stage{flex:1;position:relative;padding:clamp(40px, 5.5vw, 96px) clamp(48px, 7vw, 128px);display:flex;flex-direction:column;justify-content:center}
+
+  /* Persistent chrome */
+  .chrome{position:fixed;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:clamp(16px,1.6vw,32px) clamp(28px,4vw,72px);font-family:var(--sans);font-size:clamp(11px,0.85vw,16px);font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);z-index:10;pointer-events:none}
+  .chrome-top{top:0}
+  .chrome-bot{bottom:0}
+  .chrome .mark{display:flex;align-items:center;gap:10px}
+  .chrome .mark::before{content:"";width:6px;height:6px;background:var(--crimson);border-radius:50%}
+  .chrome-right{display:flex;align-items:center;gap:14px}
+  .fs-btn{pointer-events:auto;background:none;border:0;color:var(--ink-faint);cursor:pointer;padding:4px;display:flex;align-items:center;justify-content:center;border-radius:4px;transition:color .25s var(--ease), background .25s var(--ease)}
+  .fs-btn:hover{color:var(--crimson);background:oklch(64% 0.21 18 / .08)}
+  .fs-btn .fs-icon-exit{display:none}
+  body.is-fullscreen .fs-btn .fs-icon-enter{display:none}
+  body.is-fullscreen .fs-btn .fs-icon-exit{display:block}
+  .pager{display:flex;gap:6px}
+  .pager span{width:18px;height:1px;background:var(--ink-faint);transition:background .4s var(--ease), width .4s var(--ease)}
+  .pager span.is-on{background:var(--crimson);width:28px}
+
+  /* Slide 1 — COVER (matte) */
+  .s-cover .cover-stage{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:clamp(56px,6.5vw,120px);padding-top:clamp(56px,6vw,96px);padding-right:clamp(40px,5vw,80px);padding-bottom:clamp(56px,6vw,96px);padding-left:calc(clamp(28px,4vw,48px) + 200px);position:relative;overflow:hidden}
+  /* left structural spine — stays in place */
+  .s-cover .cover-stage::before{content:"";position:absolute;left:clamp(56px,5.6vw,84px);top:18%;bottom:14%;width:1px;background:var(--crimson);opacity:0;transform:scaleY(0);transform-origin:top;transition:opacity .6s var(--ease) .3s, transform .9s var(--ease) .3s;z-index:2}
+  .s-cover.is-active .cover-stage::before{opacity:.55;transform:scaleY(1)}
+  /* large ambient emblem — shield-only SVG (vector, sharp at any size) */
+  .s-cover .cover-emblem-bg{position:absolute;right:clamp(80px,10vw,200px);top:50%;transform:translateY(-50%);height:clamp(520px,76vh,880px);width:auto;opacity:0;pointer-events:none;object-fit:contain;user-select:none;transition:opacity 1.4s var(--ease) .25s;z-index:1}
+  .s-cover.is-active .cover-emblem-bg{opacity:.13}
+  .s-cover .cover-title{display:flex;flex-direction:column;gap:clamp(10px,1.2vw,18px);position:relative;z-index:2}
+  .s-cover .cover-edition{font-size:clamp(20px,2.2vw,52px);font-weight:700;color:var(--crimson);letter-spacing:-.005em;opacity:0;transform:translateY(8px);transition:opacity .9s var(--ease) .45s, transform .9s var(--ease) .45s}
+  .s-cover.is-active .cover-edition{opacity:1;transform:translateY(0)}
+  .s-cover .cover-h{font-family:var(--sans);font-weight:900;font-size:clamp(48px,7vw,180px);line-height:1.05;letter-spacing:-.035em;color:var(--ink);max-width:22ch;opacity:0;transform:translateY(16px);transition:opacity 1.1s var(--ease) .65s, transform 1.1s var(--ease) .65s}
+  .s-cover.is-active .cover-h{opacity:1;transform:translateY(0)}
+  .s-cover .cover-foot{display:flex;flex-direction:column;gap:clamp(8px,1.1vw,22px);font-size:clamp(15px,1.5vw,36px);color:var(--ink-dim);opacity:0;transition:opacity .9s var(--ease) 1s;position:relative;z-index:2}
+  .s-cover.is-active .cover-foot{opacity:1}
+  .s-cover .foot-row{display:flex;gap:clamp(20px,2vw,32px);align-items:baseline}
+  .s-cover .foot-label{min-width:clamp(76px,9vw,180px);font-size:clamp(12px,1.1vw,24px);letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);font-weight:600}
+
+  /* Slide 2 — WHY */
+  .s-why .eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--crimson);font-weight:600;margin-bottom:clamp(24px,3vw,40px)}
+  .why-stack{font-family:var(--serif);font-weight:700;line-height:1.04;letter-spacing:-.025em}
+  .why-stack .l{display:block;overflow:hidden}
+  .why-stack .l span{display:inline-block;transform:translateY(105%);transition:transform 1s var(--ease)}
+  .s-why.is-active .why-stack .l span{transform:translateY(0)}
+  .why-stack .l1 span{transition-delay:.20s}
+  .why-stack .l2 span{transition-delay:.42s}
+  .why-stack .l3 span{transition-delay:.64s}
+  .why-stack .l4 span{transition-delay:.86s}
+  .why-stack .l1{font-size:clamp(28px,3.6vw,52px);color:var(--ink-dim);font-weight:400;margin-bottom:clamp(6px,.6vw,12px)}
+  .why-stack .l2{font-size:clamp(40px,5.5vw,84px);color:var(--ink-dim);font-weight:500;margin-bottom:clamp(6px,.6vw,12px)}
+  .why-stack .l3{font-size:clamp(58px,8vw,128px);color:var(--ink)}
+  .why-stack .l4{font-size:clamp(70px,10vw,168px);color:var(--ink)}
+  .why-stack .dot{color:var(--crimson)}
+  .why-chips{display:flex;align-items:baseline;gap:clamp(20px,3vw,44px);margin-top:clamp(40px,5vw,72px);font-family:var(--sans);font-weight:500;letter-spacing:.02em}
+  .why-chips .chip-group{display:flex;align-items:baseline;gap:clamp(8px,1vw,14px);opacity:0;transform:translateY(8px);transition:opacity .8s var(--ease), transform .8s var(--ease)}
+  .why-chips .chip-group.dim{font-size:clamp(13px,1.05vw,16px);color:var(--ink-faint)}
+  .why-chips .chip-group.emph{font-size:clamp(20px,1.7vw,26px);color:var(--ink);font-weight:700;letter-spacing:.01em}
+  .why-chips .chip-group .mid{color:var(--ink-faint);font-weight:400}
+  .why-chips .chip-divider{width:1px;height:clamp(18px,2vw,28px);background:var(--rule);align-self:center;opacity:0;transform:scaleY(0);transform-origin:center;transition:opacity .6s var(--ease), transform .6s var(--ease)}
+  .why-chips .chip .ul{position:relative;display:inline-block}
+  .why-chips .chip .ul::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:2px;background:var(--crimson);transform:scaleX(0);transform-origin:left;transition:transform .8s var(--ease)}
+  .s-why.is-active .why-chips .chip-group.dim{opacity:1;transform:translateY(0);transition-delay:1.15s}
+  .s-why.is-active .why-chips .chip-divider{opacity:1;transform:scaleY(1);transition-delay:1.4s}
+  .s-why.is-active .why-chips .chip-group.emph{opacity:1;transform:translateY(0);transition-delay:1.55s}
+  .s-why.is-active .why-chips .chip-group.emph .chip:nth-child(1) .ul::after{transform:scaleX(1);transition-delay:1.95s}
+  .s-why.is-active .why-chips .chip-group.emph .chip:nth-child(3) .ul::after{transform:scaleX(1);transition-delay:2.15s}
+
+  /* Slide 3 — TWO CHAIRS (profile cards) */
+  .s-chairs .stage{flex-direction:column}
+  .s-chairs .eyebrow{font-size:clamp(11px,0.85vw,18px);letter-spacing:.22em;text-transform:uppercase;color:var(--crimson);font-weight:600;margin-bottom:clamp(28px,3.4vw,48px)}
+  .chairs-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,2.4vw,32px);flex:1;align-content:center}
+  .chair-card{position:relative;background:oklch(99% 0.008 70);border:1px solid var(--rule);border-radius:clamp(16px,1.6vw,22px);padding:clamp(32px,4vw,56px);display:flex;flex-direction:column;box-shadow:0 12px 36px -20px oklch(26% 0.045 22 / .12);overflow:hidden;opacity:0;transform:translateY(20px);transition:opacity .9s var(--ease), transform .9s var(--ease)}
+  .chair-card::before{content:"";position:absolute;top:0;left:0;width:100%;height:4px;background:var(--crimson)}
+  .chair-card.chair-r::before{background:oklch(66% 0.19 38)}
+  .s-chairs.is-active .chair-l{transition-delay:.20s}
+  .s-chairs.is-active .chair-r{transition-delay:.40s}
+  .s-chairs.is-active .chair-card{opacity:1;transform:translateY(0)}
+  .card-logo{position:absolute;top:clamp(24px,2.4vw,40px);right:clamp(24px,2.4vw,40px);opacity:1;pointer-events:none;user-select:none}
+  .card-logo-wordmark{height:clamp(40px,3.6vw,72px);width:auto}
+  .card-logo-shield{height:clamp(50px,4.4vw,84px);width:auto}
+  .card-role{font-size:clamp(11px,0.85vw,18px);letter-spacing:.24em;text-transform:uppercase;color:var(--crimson);font-weight:700}
+  .chair-r .card-role{color:oklch(66% 0.19 38)}
+  .card-name{font-family:var(--sans);font-weight:900;font-size:clamp(40px,5vw,128px);letter-spacing:-.03em;line-height:1;color:var(--ink);margin:clamp(8px,1.2vw,24px) 0 clamp(10px,1.4vw,28px)}
+  .card-meta{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px;font-size:clamp(15px,1.3vw,32px);color:var(--ink-dim);line-height:1.5}
+  .card-meta strong{color:var(--ink);font-weight:700}
+  .card-meta .sep{color:var(--ink-faint)}
+  .card-tags{display:flex;flex-wrap:wrap;gap:clamp(8px,0.8vw,16px);margin-top:auto;padding-top:clamp(20px,2.8vw,52px)}
+  .card-tags .tag{font-size:clamp(12px,1vw,22px);padding:clamp(6px,0.6vw,12px) clamp(12px,1vw,22px);border-radius:999px;background:var(--bg);border:1px solid var(--rule);color:var(--ink-dim);font-weight:500;letter-spacing:.01em}
+
+  /* Slides 4 & 5 — SPEAKERS */
+  .s-spk .stage{padding:0}
+  .spk-grid{display:grid;grid-template-columns:1fr 1.05fr;width:100%;height:100%}
+  .s-spk.flip .spk-grid{grid-template-columns:1.05fr 1fr}
+  .spk-photo{position:relative;overflow:hidden;background:var(--bg-2)}
+  .spk-photo img{width:100%;height:100%;object-fit:cover;transform:scale(1.06);transition:transform 1.6s var(--ease-soft)}
+  .s-spk.is-active .spk-photo img{transform:scale(1)}
+  .spk-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg, oklch(80% 0.13 48 / 0) 55%, oklch(64% 0.21 18 / .18) 100%);pointer-events:none;mix-blend-mode:multiply}
+  .s-spk.flip .spk-photo::after{background:linear-gradient(225deg, oklch(80% 0.13 48 / 0) 55%, oklch(80% 0.13 48 / .28) 100%)}
+  .spk-copy{padding:clamp(48px,6vw,104px) clamp(40px,5vw,88px);display:flex;flex-direction:column;justify-content:center;position:relative;background:var(--bg)}
+  .spk-copy .session{font-size:clamp(11px,0.9vw,18px);letter-spacing:.24em;text-transform:uppercase;color:var(--crimson);font-weight:600;margin-bottom:clamp(28px,3.2vw,52px);opacity:0;transform:translateY(8px);transition:opacity .7s var(--ease) .35s, transform .7s var(--ease) .35s}
+  .spk-copy .name{font-family:var(--serif);font-weight:900;font-size:clamp(72px,11vw,260px);line-height:.92;letter-spacing:-.04em;color:var(--ink);margin-bottom:clamp(20px,2.6vw,48px);overflow:hidden}
+  .spk-copy .name span{display:inline-block;transform:translateY(105%);transition:transform 1s var(--ease) .5s}
+  .spk-copy .info{font-size:clamp(15px,1.3vw,30px);color:var(--ink-dim);letter-spacing:.02em;margin-bottom:clamp(36px,4.2vw,64px);opacity:0;transition:opacity .8s var(--ease) .85s}
+  .spk-copy .info strong{color:var(--ink);font-weight:600}
+  .spk-copy .teaser{font-family:var(--serif);font-weight:400;font-size:clamp(20px,2vw,30px);line-height:1.4;letter-spacing:-.01em;color:var(--ink);max-width:38ch;border-left:2px solid var(--crimson);padding-left:clamp(18px,1.6vw,26px);opacity:0;transform:translateX(-12px);transition:opacity .9s var(--ease) 1.05s, transform .9s var(--ease) 1.05s}
+  .spk-copy .teaser em{font-style:normal;color:var(--crimson)}
+  .spk-copy .spk-tags{display:flex;flex-wrap:wrap;gap:clamp(8px,0.8vw,14px);margin-bottom:clamp(20px,2.4vw,40px);opacity:0;transition:opacity .9s var(--ease) 1s}
+  .spk-copy .spk-tags .tag{font-size:clamp(12px,1vw,22px);padding:clamp(6px,0.6vw,12px) clamp(12px,1vw,22px);border-radius:999px;background:var(--bg-2);border:1px solid var(--rule);color:var(--ink-dim);font-weight:500;letter-spacing:.01em}
+  .spk-copy .spk-desc{font-size:clamp(15px,1.3vw,30px);line-height:1.6;color:var(--ink-dim);max-width:38ch;opacity:0;transform:translateY(8px);transition:opacity .9s var(--ease) 1.15s, transform .9s var(--ease) 1.15s}
+  .spk-logo{position:absolute;top:clamp(40px,4.5vw,72px);right:clamp(36px,4vw,64px);height:clamp(36px,3.2vw,64px);width:auto;object-fit:contain;pointer-events:none;user-select:none;opacity:1;z-index:3}
+  .s-spk.is-active .spk-copy .spk-tags{opacity:1}
+  .s-spk.is-active .spk-copy .spk-desc{opacity:1;transform:translateY(0)}
+  .s-spk.is-active .spk-copy .session{opacity:1;transform:translateY(0)}
+  .s-spk.is-active .spk-copy .name span{transform:translateY(0)}
+  .s-spk.is-active .spk-copy .info{opacity:1}
+  .s-spk.is-active .spk-copy .teaser{opacity:1;transform:translateX(0)}
+
+  /* Slide 5 — PROGRAM TIMELINE */
+  .s-schedule .stage{justify-content:center}
+  .s-schedule .eyebrow{font-size:clamp(11px,0.85vw,18px);letter-spacing:.22em;text-transform:uppercase;color:var(--crimson);font-weight:700;margin-bottom:clamp(36px,4.5vw,80px);opacity:0;transition:opacity .8s var(--ease) .15s}
+  .s-schedule.is-active .eyebrow{opacity:1}
+  .s-schedule .schedule{display:flex;flex-direction:column;max-width:1400px;width:100%}
+  .s-schedule .sch-row{display:grid;grid-template-columns:clamp(72px,7vw,160px) clamp(140px,14vw,300px) 1fr;align-items:baseline;gap:clamp(20px,2.4vw,56px);padding:clamp(14px,1.6vw,28px) 0;border-bottom:1px solid var(--rule);font-size:clamp(16px,1.5vw,32px);opacity:0;transform:translateY(8px);transition:opacity .8s var(--ease), transform .8s var(--ease)}
+  .s-schedule .sch-row:last-child{border-bottom:none}
+  .s-schedule .sch-time{font-weight:600;color:var(--ink-dim);font-variant-numeric:tabular-nums;letter-spacing:.01em}
+  .s-schedule .sch-event{color:var(--ink);font-weight:600}
+  .s-schedule .sch-detail{color:var(--ink-dim);font-size:clamp(14px,1.3vw,28px);font-weight:400}
+  .s-schedule .sch-row.is-session{background:linear-gradient(90deg, oklch(64% 0.21 18 / .04), transparent 70%)}
+  .s-schedule .sch-row.is-session .sch-event{color:var(--crimson);font-weight:700}
+  .s-schedule.is-active .sch-row{opacity:1;transform:translateY(0)}
+  .s-schedule.is-active .sch-row:nth-child(1){transition-delay:.30s}
+  .s-schedule.is-active .sch-row:nth-child(2){transition-delay:.40s}
+  .s-schedule.is-active .sch-row:nth-child(3){transition-delay:.50s}
+  .s-schedule.is-active .sch-row:nth-child(4){transition-delay:.60s}
+  .s-schedule.is-active .sch-row:nth-child(5){transition-delay:.70s}
+  .s-schedule.is-active .sch-row:nth-child(6){transition-delay:.80s}
+  .s-schedule.is-active .sch-row:nth-child(7){transition-delay:.90s}
+
+  /* Slide 6 — DINNER (chicken bg behind text · QR right) */
+  .s-dinner .stage{position:relative;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:0}
+  /* Chicken — behind text on the LEFT, full size */
+  .dinner-bg{position:absolute;left:clamp(-200px,-10vw,-80px);top:50%;transform:translateY(-50%);height:clamp(840px,124vh,1440px);width:auto;opacity:0;pointer-events:none;object-fit:contain;user-select:none;mix-blend-mode:multiply;transition:opacity 1.4s var(--ease) .25s;z-index:1}
+  .s-dinner.is-active .dinner-bg{opacity:.22}
+  .dinner-copy{position:relative;z-index:2;padding:clamp(48px,6vw,96px) clamp(36px,4vw,64px) clamp(48px,6vw,96px) clamp(48px,5.5vw,96px);display:flex;flex-direction:column;justify-content:center}
+  .s-dinner .eyebrow{font-size:clamp(11px,0.85vw,18px);letter-spacing:.22em;text-transform:uppercase;color:var(--crimson);font-weight:700;margin-bottom:clamp(28px,3.4vw,52px);opacity:0;transition:opacity .8s var(--ease) .15s}
+  .s-dinner.is-active .eyebrow{opacity:1}
+  .s-dinner .dinner-name{font-family:var(--sans);font-weight:900;font-size:clamp(48px,6vw,100px);line-height:1.05;letter-spacing:-.035em;color:var(--ink);margin-bottom:clamp(40px,4.5vw,72px);opacity:0;transform:translateY(14px);transition:opacity 1s var(--ease) .35s, transform 1s var(--ease) .35s;white-space:nowrap}
+  .s-dinner.is-active .dinner-name{opacity:1;transform:translateY(0)}
+  .s-dinner .dinner-meta{display:flex;flex-direction:column;gap:clamp(10px,1.2vw,22px);opacity:0;transition:opacity .9s var(--ease) .65s}
+  .s-dinner.is-active .dinner-meta{opacity:1}
+  .s-dinner .dinner-row{display:flex;gap:clamp(20px,2vw,40px);align-items:baseline;font-size:clamp(15px,1.3vw,30px);color:var(--ink-dim);line-height:1.6}
+  .s-dinner .dinner-label{min-width:clamp(56px,5vw,120px);font-size:clamp(10px,0.85vw,18px);letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint);font-weight:600;flex-shrink:0}
+  /* QR — wide right side */
+  .dinner-qr{position:relative;z-index:2;padding:clamp(40px,5vw,88px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(20px,2.4vw,32px);opacity:0;transform:translateX(12px);transition:opacity 1s var(--ease) .55s, transform 1s var(--ease) .55s}
+  .s-dinner.is-active .dinner-qr{opacity:1;transform:translateX(0)}
+  .dinner-qr .qr-img{width:clamp(280px,32vw,640px);height:clamp(280px,32vw,640px);background:#fff;padding:clamp(14px,1.2vw,24px);border-radius:clamp(14px,1.2vw,22px);box-shadow:0 16px 48px -20px oklch(26% 0.045 22 / .25)}
+  .dinner-qr .qr-label{text-align:center;display:flex;flex-direction:column;gap:4px;line-height:1.5}
+  .dinner-qr .qr-tag{font-size:clamp(10px,0.85vw,18px);letter-spacing:.24em;text-transform:uppercase;color:var(--crimson);font-weight:700;margin-bottom:4px}
+  .dinner-qr strong{color:var(--ink);font-weight:700;font-size:clamp(16px,1.4vw,30px)}
+  .dinner-qr .qr-sub{color:var(--ink-faint);font-size:clamp(12px,1.1vw,22px)}
+
+  /* Slide 7 — SESSION LAUNCH (chapter mark) */
+  .s-launch .stage{justify-content:center}
+  .s-launch .eyebrow{font-size:clamp(11px,0.9vw,18px);letter-spacing:.24em;text-transform:uppercase;color:var(--crimson);font-weight:700;margin-bottom:clamp(20px,2.4vw,40px);opacity:0;transition:opacity .8s var(--ease) .15s}
+  .s-launch.is-active .eyebrow{opacity:1}
+  .s-launch .launch-h{font-family:var(--sans);font-weight:900;font-size:clamp(96px,14vw,360px);line-height:.92;letter-spacing:-.045em;color:var(--ink);opacity:0;transform:translateY(18px);transition:opacity 1.1s var(--ease) .35s, transform 1.1s var(--ease) .35s}
+  .s-launch.is-active .launch-h{opacity:1;transform:translateY(0)}
+  .s-launch .launch-h .dot{color:var(--crimson)}
+  .s-launch .launch-divider{width:clamp(80px,8vw,180px);height:1px;background:var(--rule);margin:clamp(36px,4.5vw,80px) 0;transform:scaleX(0);transform-origin:left;transition:transform .9s var(--ease) .8s}
+  .s-launch.is-active .launch-divider{transform:scaleX(1)}
+  .s-launch .launch-info{opacity:0;transform:translateY(8px);transition:opacity .9s var(--ease) 1s, transform .9s var(--ease) 1s}
+  .s-launch.is-active .launch-info{opacity:1;transform:translateY(0)}
+  .s-launch .launch-name{font-family:var(--sans);font-weight:700;font-size:clamp(36px,4.6vw,120px);line-height:1;letter-spacing:-.03em;color:var(--ink);margin-bottom:clamp(10px,1.2vw,22px)}
+  .s-launch .launch-role{font-size:clamp(15px,1.3vw,30px);color:var(--ink-dim);letter-spacing:.01em}
+
+  /* Ambient warmth — soft peach glows, paper grain */
+  .deck::before{content:"";position:fixed;inset:0;background:
+      radial-gradient(52% 46% at 92% 88%, oklch(82% 0.14 50 / .42), transparent 70%),
+      radial-gradient(38% 34% at 4% 6%, oklch(72% 0.18 22 / .14), transparent 72%);
+    pointer-events:none;z-index:1}
+  .deck::after{content:"";position:fixed;inset:0;background-image:radial-gradient(oklch(26% 0.045 22 / .045) 1px, transparent 1px);background-size:3px 3px;pointer-events:none;z-index:1;opacity:.65}
+
+  /* Help overlay */
+  .help{position:fixed;inset:0;background:oklch(96.5% 0.016 70 / .92);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;z-index:50;padding:48px}
+  .help.is-on{display:flex}
+  .help-card{max-width:520px;width:100%;background:oklch(99% 0.008 70);border:1px solid var(--rule);border-radius:16px;padding:48px;font-family:var(--sans);box-shadow:0 24px 60px -20px oklch(26% 0.045 22 / .22)}
+  .help-card h3{font-size:32px;font-weight:900;margin-bottom:8px;letter-spacing:-.02em}
+  .help-card .sub{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--crimson);margin-bottom:32px;font-weight:700}
+  .help-card dl{display:grid;grid-template-columns:auto 1fr;gap:14px 24px;font-size:14px}
+  .help-card dt{font-weight:700;color:var(--ink)}
+  .help-card dd{color:var(--ink-dim)}
+  .help-card kbd{display:inline-block;padding:2px 8px;border:1px solid var(--rule);border-radius:6px;font-family:ui-monospace,monospace;font-size:12px;color:var(--ink);background:var(--bg-2)}
+  .help-card .hint{margin-top:32px;font-size:12px;color:var(--ink-faint)}
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{transition-duration:.001s !important;animation-duration:.001s !important}
+  }
+
+  /* Aspect lock — keep 16:9 if window is wider/taller than expected */
+  @media (max-aspect-ratio: 4/3){
+    .chairs-grid{grid-template-columns:1fr;grid-template-rows:auto auto auto}
+    .chairs-grid .divider{display:none}
+    .chair.r{padding-top:0}
+    .spk-grid{grid-template-columns:1fr;grid-template-rows:42% 58%}
+    .s-spk.flip .spk-grid{grid-template-columns:1fr;grid-template-rows:42% 58%}
+  }
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- Persistent chrome -->
+  <div class="chrome chrome-top">
+    <div class="mark">Opening · 2026.05.02</div>
+    <div class="chrome-right">
+      <button id="fsBtn" class="fs-btn" aria-label="전체화면 토글" title="전체화면 (F)">
+        <svg class="fs-icon-enter" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+        <svg class="fs-icon-exit" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/></svg>
+      </button>
+      <span id="counter">01 / 07</span>
+    </div>
+  </div>
+  <div class="chrome chrome-bot">
+    <div>약대 교우회 · 회사·학계지부</div>
+    <div class="pager" id="pager"></div>
+  </div>
+
+  <!-- 1 · COVER -->
+  <section class="slide s-cover is-active" data-i="1">
+    <div class="stage cover-stage">
+      <img src="img/emblem-shield.svg" alt="" class="cover-emblem-bg" aria-hidden="true">
+      <div class="cover-title">
+        <div class="cover-edition">제 1회</div>
+        <h1 class="cover-h">고대약대<br>회사·학계 지부 세미나</h1>
+      </div>
+      <footer class="cover-foot">
+        <div class="foot-row"><span class="foot-label">일시</span><span>2026년 5월 2일 (토) 15:00</span></div>
+        <div class="foot-row"><span class="foot-label">장소</span><span>용산역 4층 ITX 6 회의실</span></div>
+        <div class="foot-row"><span class="foot-label">회사 지부장</span><span>이재영 · 09학번</span></div>
+        <div class="foot-row"><span class="foot-label">학계 지부장</span><span>강대원 · 09학번</span></div>
+      </footer>
+    </div>
+  </section>
+
+  <!-- 2 · TWO CHAIRS -->
+  <section class="slide s-chairs" data-i="2">
+    <div class="stage">
+      <div class="eyebrow">지부장 소개</div>
+      <div class="chairs-grid">
+        <div class="chair-card chair-l">
+          <img src="img/samyang-logo.png" alt="" class="card-logo card-logo-wordmark" aria-hidden="true">
+          <span class="card-role">회사 지부장</span>
+          <h3 class="card-name">이재영</h3>
+          <div class="card-meta">
+            <span><strong>09학번</strong></span>
+            <span class="sep">·</span>
+            <span>삼양바이오팜 Senior Researcher</span>
+          </div>
+          <div class="card-tags">
+            <span class="tag">#육순홍교수님랩</span>
+            <span class="tag">#산업약학</span>
+            <span class="tag">#DDS</span>
+            <span class="tag">#병특</span>
+          </div>
+        </div>
+        <div class="chair-card chair-r">
+          <img src="img/emblem-shield.svg" alt="" class="card-logo card-logo-shield" aria-hidden="true">
+          <span class="card-role">학계 지부장</span>
+          <h3 class="card-name">강대원</h3>
+          <div class="card-meta">
+            <span><strong>09학번</strong></span>
+            <span class="sep">·</span>
+            <span>고려대 약학대학 연구교수</span>
+          </div>
+          <div class="card-tags">
+            <span class="tag">#최상은교수님랩</span>
+            <span class="tag">#사회약학</span>
+            <span class="tag">#보건의료</span>
+            <span class="tag">#약사법</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · SPEAKER 1 (정회윤) -->
+  <section class="slide s-spk" data-i="3">
+    <div class="stage">
+      <div class="spk-grid">
+        <div class="spk-copy">
+          <img src="img/sk-logo.png" alt="" class="spk-logo" aria-hidden="true">
+          <div class="session">Session 1 · 대학원 편</div>
+          <h2 class="name"><span>정회윤</span></h2>
+          <div class="info"><strong>09학번</strong> &middot; SK바이오팜 책임연구원</div>
+          <div class="spk-tags">
+            <span class="tag">#박사</span>
+            <span class="tag">#병역특례</span>
+          </div>
+          <p class="spk-desc">대학원 진학과 연구자의 길,<br>그 이후의 커리어까지.</p>
+        </div>
+        <div class="spk-photo">
+          <img src="img/speaker2.png" alt="정회윤 연자" loading="eager">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · SPEAKER 2 (안아름) -->
+  <section class="slide s-spk flip" data-i="4">
+    <div class="stage">
+      <div class="spk-grid">
+        <div class="spk-photo">
+          <img src="img/speaker1.png" alt="안아름 연자" loading="eager">
+        </div>
+        <div class="spk-copy">
+          <img src="img/msd-logo.svg" alt="" class="spk-logo" aria-hidden="true">
+          <div class="session">Session 2 · 회사 편</div>
+          <h2 class="name"><span>안아름</span></h2>
+          <div class="info"><strong>12학번</strong> &middot; MSD MI팀</div>
+          <div class="spk-tags">
+            <span class="tag">#국내사</span>
+            <span class="tag">#외자사</span>
+          </div>
+          <p class="spk-desc">제약회사에서의 커리어 여정과<br>약대 졸업 후 회사생활 이야기.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · PROGRAM TIMELINE -->
+  <section class="slide s-schedule" data-i="5">
+    <div class="stage">
+      <div class="eyebrow">Program</div>
+      <div class="schedule">
+        <div class="sch-row">
+          <span class="sch-time">15:00</span>
+          <span class="sch-event">등록</span>
+          <span class="sch-detail"></span>
+        </div>
+        <div class="sch-row">
+          <span class="sch-time">15:10</span>
+          <span class="sch-event">오프닝</span>
+          <span class="sch-detail">지부장 인사</span>
+        </div>
+        <div class="sch-row is-session">
+          <span class="sch-time">15:15</span>
+          <span class="sch-event">Session 1</span>
+          <span class="sch-detail">정회윤 · 대학원 편</span>
+        </div>
+        <div class="sch-row">
+          <span class="sch-time">16:00</span>
+          <span class="sch-event">Coffee Break</span>
+          <span class="sch-detail"></span>
+        </div>
+        <div class="sch-row is-session">
+          <span class="sch-time">16:15</span>
+          <span class="sch-event">Session 2</span>
+          <span class="sch-detail">안아름 · 회사 편</span>
+        </div>
+        <div class="sch-row">
+          <span class="sch-time">17:00</span>
+          <span class="sch-event">저녁식사 · 네트워킹</span>
+          <span class="sch-detail">코리안치킨클럽</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · DINNER (info shown before session begins) -->
+  <section class="slide s-dinner" data-i="6">
+    <div class="stage">
+      <img src="img/chicken.png" alt="" class="dinner-bg" aria-hidden="true">
+      <div class="dinner-copy">
+        <div class="eyebrow">After Party · 17:00</div>
+        <h2 class="dinner-name">코리안치킨클럽</h2>
+        <div class="dinner-meta">
+          <div class="dinner-row"><span class="dinner-label">주소</span><span>서울 용산구 한강대로21나길 40</span></div>
+          <div class="dinner-row"><span class="dinner-label">이동</span><span>용산역 1번 출구 → 도보 6분 (383m)</span></div>
+          <div class="dinner-row"><span class="dinner-label">주차</span><span>드래곤힐스파 주차장 이용 가능</span></div>
+          <div class="dinner-row"><span class="dinner-label">예약자</span><span>강대원</span></div>
+        </div>
+      </div>
+      <div class="dinner-qr">
+        <img src="img/qr-map.png" alt="네이버 지도 길찾기 QR" class="qr-img">
+        <div class="qr-label">
+          <span class="qr-tag">Scan</span>
+          <strong>네이버 지도 길찾기</strong>
+          <span class="qr-sub">용산역 → 코리안치킨클럽 도보 경로</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · SESSION LAUNCH -->
+  <section class="slide s-launch" data-i="7">
+    <div class="stage">
+      <div class="eyebrow">Now Beginning</div>
+      <h2 class="launch-h">Session 1<span class="dot">.</span></h2>
+      <div class="launch-divider"></div>
+      <div class="launch-info">
+        <div class="launch-name">정회윤</div>
+        <div class="launch-role">대학원 편 · 09학번 · SK바이오팜 책임연구원</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- Help overlay -->
+<div class="help" id="help">
+  <div class="help-card">
+    <div class="sub">Keys</div>
+    <h3>Opening Deck</h3>
+    <dl>
+      <dt><kbd>→</kbd> <kbd>Space</kbd></dt><dd>다음</dd>
+      <dt><kbd>←</kbd></dt><dd>이전</dd>
+      <dt><kbd>1</kbd> – <kbd>6</kbd></dt><dd>해당 슬라이드</dd>
+      <dt><kbd>F</kbd></dt><dd>풀스크린 토글</dd>
+      <dt><kbd>?</kbd> <kbd>Esc</kbd></dt><dd>도움말 토글</dd>
+    </dl>
+    <p class="hint">발표 직전 <kbd>F</kbd>로 풀스크린, <kbd>Home</kbd>으로 1번 슬라이드.</p>
+  </div>
+</div>
+
+<script>
+(() => {
+  const deck = document.getElementById('deck');
+  const slides = [...deck.querySelectorAll('.slide')];
+  const pager = document.getElementById('pager');
+  const counter = document.getElementById('counter');
+  const help = document.getElementById('help');
+  const total = slides.length;
+  let idx = 0;
+
+  // build pager
+  slides.forEach((_, i) => {
+    const dot = document.createElement('span');
+    if (i === 0) dot.classList.add('is-on');
+    pager.appendChild(dot);
+  });
+
+  function pad(n){ return String(n).padStart(2,'0'); }
+
+  function go(next, immediate){
+    if (next === idx || next < 0 || next >= total) return;
+    const cur = slides[idx];
+    const nxt = slides[next];
+    cur.classList.remove('is-active');
+    cur.classList.add('is-leaving');
+    // small delay so leaving + entering look layered, not abrupt
+    setTimeout(() => cur.classList.remove('is-leaving'), 600);
+    nxt.classList.add('is-active');
+    idx = next;
+    pager.children[idx] && [...pager.children].forEach((d,i)=>d.classList.toggle('is-on', i===idx));
+    counter.textContent = `${pad(idx+1)} / ${pad(total)}`;
+  }
+
+  function toggleFullscreen(){
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+    else document.exitFullscreen?.();
+  }
+  document.getElementById('fsBtn').addEventListener('click', toggleFullscreen);
+  document.addEventListener('fullscreenchange', () => {
+    document.body.classList.toggle('is-fullscreen', !!document.fullscreenElement);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    const k = e.key;
+    if (help.classList.contains('is-on')){
+      if (k === 'Escape' || k === '?') help.classList.remove('is-on');
+      return;
+    }
+    if (k === 'ArrowRight' || k === ' ' || k === 'PageDown') { e.preventDefault(); go(idx+1); }
+    else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); go(idx-1); }
+    else if (k === 'Home') go(0);
+    else if (k === 'End') go(total-1);
+    else if (k === 'f' || k === 'F') toggleFullscreen();
+    else if (k === '?' || k === '/') help.classList.toggle('is-on');
+    else if (/^[1-9]$/.test(k)) {
+      const n = parseInt(k,10) - 1;
+      if (n < total) go(n);
+    }
+  });
+
+  // click to advance, but ignore in help
+  deck.addEventListener('click', (e) => {
+    if (help.classList.contains('is-on')) return;
+    // left third = prev, rest = next
+    const x = e.clientX / window.innerWidth;
+    if (x < 0.18) go(idx-1); else go(idx+1);
+  });
+})();
+</script>
+</body>
+</html>

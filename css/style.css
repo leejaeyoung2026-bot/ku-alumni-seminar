@@ -426,6 +426,28 @@ body {
   color: var(--text-secondary);
 }
 
+.timeline-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+.timeline-link:hover {
+  border-left-color: var(--crimson);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+.timeline-link .timeline-arrow {
+  display: inline-block;
+  margin-left: 4px;
+  color: var(--crimson);
+  font-weight: 600;
+  transition: transform 0.2s ease;
+}
+.timeline-link:hover .timeline-arrow {
+  transform: translate(2px, -2px);
+}
+
 /* ============================================
    SPEAKERS SECTION
    ============================================ */
