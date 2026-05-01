@@ -632,7 +632,7 @@
     if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
     else document.exitFullscreen?.();
   }
-  document.getElementById('fsBtn').addEventListener('click', toggleFullscreen);
+  document.getElementById('fsBtn').addEventListener('click', (e) => { e.stopPropagation(); toggleFullscreen(); });
   document.addEventListener('fullscreenchange', () => {
     document.body.classList.toggle('is-fullscreen', !!document.fullscreenElement);
   });
