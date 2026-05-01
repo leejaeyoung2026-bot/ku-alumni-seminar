@@ -217,6 +217,14 @@
     pointer-events:none;z-index:1}
   .deck::after{content:"";position:fixed;inset:0;background-image:radial-gradient(oklch(26% 0.045 22 / .045) 1px, transparent 1px);background-size:3px 3px;pointer-events:none;z-index:1;opacity:.65}
 
+  /* Slide nav buttons */
+  .nav-btn{position:fixed;z-index:11;width:48px;height:48px;border-radius:50%;background:oklch(99% 0.008 70);border:1px solid var(--rule);color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px -4px oklch(26% 0.045 22 / .18);pointer-events:auto;bottom:clamp(56px,7vh,96px);transition:transform .2s var(--ease), background .2s var(--ease), opacity .25s var(--ease);opacity:.85}
+  .nav-btn:hover{background:var(--bg);opacity:1;transform:scale(1.06)}
+  .nav-btn:active{transform:scale(0.96)}
+  .nav-prev{left:clamp(14px,2vw,28px)}
+  .nav-next{right:clamp(14px,2vw,28px)}
+  body.is-fullscreen .nav-btn{display:none}
+
   /* Help overlay */
   .help{position:fixed;inset:0;background:oklch(96.5% 0.016 70 / .92);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;z-index:50;padding:48px}
   .help.is-on{display:flex}
@@ -328,6 +336,12 @@
     .s-launch .launch-divider{margin:30px 0}
     .s-launch .launch-name{font-size:28px}
     .s-launch .launch-role{font-size:13px}
+  }
+
+  /* Mobile nav buttons — keep visible even in fullscreen */
+  @media (max-width: 768px){
+    .nav-btn{width:44px;height:44px;bottom:24px}
+    body.is-fullscreen .nav-btn{display:flex}
   }
 
   /* Phone-specific tighter (≤ 480px) */
@@ -542,6 +556,14 @@
 
 </div>
 
+<!-- Slide nav buttons (prev/next) -->
+<button class="nav-btn nav-prev" id="navPrev" aria-label="이전 슬라이드" title="이전 (←)">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+</button>
+<button class="nav-btn nav-next" id="navNext" aria-label="다음 슬라이드" title="다음 (→)">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+</button>
+
 <!-- Help overlay -->
 <div class="help" id="help">
   <div class="help-card">
@@ -618,13 +640,21 @@
     }
   });
 
-  // click to advance, but ignore in help
-  deck.addEventListener('click', (e) => {
-    if (help.classList.contains('is-on')) return;
-    // left third = prev, rest = next
-    const x = e.clientX / window.innerWidth;
-    if (x < 0.18) go(idx-1); else go(idx+1);
-  });
+  // explicit nav buttons
+  document.getElementById('navPrev').addEventListener('click', (e) => { e.stopPropagation(); go(idx-1); });
+  document.getElementById('navNext').addEventListener('click', (e) => { e.stopPropagation(); go(idx+1); });
+
+  // click-to-advance only on hover-capable (desktop with mouse) — not on touch devices
+  const isTouchOnly = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+  if (!isTouchOnly) {
+    deck.addEventListener('click', (e) => {
+      if (help.classList.contains('is-on')) return;
+      // ignore clicks on interactive elements
+      if (e.target.closest('button, a, .qr-img, .nav-btn')) return;
+      const x = e.clientX / window.innerWidth;
+      if (x < 0.18) go(idx-1); else go(idx+1);
+    });
+  }
 })();
 </script>
 </body>
