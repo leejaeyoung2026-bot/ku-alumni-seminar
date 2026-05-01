@@ -198,8 +198,11 @@
   .s-dinner .dinner-row{display:flex;gap:clamp(20px,2vw,40px);align-items:baseline;font-size:clamp(15px,1.3vw,30px);color:var(--ink-dim);line-height:1.6}
   .s-dinner .dinner-label{min-width:clamp(56px,5vw,120px);font-size:clamp(10px,0.85vw,18px);letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint);font-weight:600;flex-shrink:0}
   /* QR — wide right side */
-  .dinner-qr{position:relative;z-index:2;padding:clamp(40px,5vw,88px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(20px,2.4vw,32px);opacity:0;transform:translateX(12px);transition:opacity 1s var(--ease) .55s, transform 1s var(--ease) .55s}
+  .dinner-qr{position:relative;z-index:2;padding:clamp(40px,5vw,88px);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transform:translateX(12px);transition:opacity 1s var(--ease) .55s, transform 1s var(--ease) .55s}
   .s-dinner.is-active .dinner-qr{opacity:1;transform:translateX(0)}
+  .dinner-qr .qr-link{display:flex;flex-direction:column;align-items:center;gap:clamp(20px,2.4vw,32px);text-decoration:none;color:inherit;cursor:pointer;transition:transform .25s var(--ease)}
+  .dinner-qr .qr-link:hover{transform:scale(1.02)}
+  .dinner-qr .qr-link:active{transform:scale(0.98)}
   .dinner-qr .qr-img{width:clamp(280px,32vw,640px);height:clamp(280px,32vw,640px);background:#fff;padding:clamp(14px,1.2vw,24px);border-radius:clamp(14px,1.2vw,22px);box-shadow:0 16px 48px -20px oklch(26% 0.045 22 / .25)}
   .dinner-qr .qr-label{text-align:center;display:flex;flex-direction:column;gap:4px;line-height:1.5}
   .dinner-qr .qr-tag{font-size:clamp(10px,0.85vw,18px);letter-spacing:.24em;text-transform:uppercase;color:var(--crimson);font-weight:700;margin-bottom:4px}
@@ -541,12 +544,14 @@
         </div>
       </div>
       <div class="dinner-qr">
-        <img src="img/qr-map.png" alt="네이버 지도 길찾기 QR" class="qr-img">
-        <div class="qr-label">
-          <span class="qr-tag">Scan</span>
-          <strong>네이버 지도 길찾기</strong>
-          <span class="qr-sub">용산역 → 코리안치킨클럽 도보 경로</span>
-        </div>
+        <a class="qr-link" href="https://map.naver.com/p/directions/3zh7R1,2AKxsW,%EC%9A%A9%EC%82%B0%EC%97%AD%203%EC%B8%B5%20%ED%9A%8C%EC%9D%98%EC%8B%A4,2141645299,PLACE_POI/3zh66n,2AKrjM,%EC%BD%94%EB%A6%AC%EC%95%88%EC%B9%98%ED%82%A8%ED%81%B4%EB%9F%BD,1989710660,PLACE_POI/-/walk/0?c=17.00,0,0,0,dh" target="_blank" rel="noopener" aria-label="네이버 지도 길찾기 열기">
+          <img src="img/qr-map.png" alt="네이버 지도 길찾기 QR" class="qr-img">
+          <div class="qr-label">
+            <span class="qr-tag">Tap / Scan</span>
+            <strong>네이버 지도 길찾기</strong>
+            <span class="qr-sub">용산역 → 코리안치킨클럽 도보 경로</span>
+          </div>
+        </a>
       </div>
     </div>
   </section>
