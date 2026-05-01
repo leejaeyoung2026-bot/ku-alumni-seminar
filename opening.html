@@ -242,6 +242,103 @@
     .spk-grid{grid-template-columns:1fr;grid-template-rows:42% 58%}
     .s-spk.flip .spk-grid{grid-template-columns:1fr;grid-template-rows:42% 58%}
   }
+
+  /* ============================================
+     MOBILE RESPONSIVE (≤ 768px)
+     ============================================ */
+  @media (max-width: 768px){
+    /* Allow scrolling within each slide if content overflows */
+    .slide{overflow-y:auto;-webkit-overflow-scrolling:touch}
+    .stage{min-height:100%}
+
+    /* Chrome — compact, smaller letters */
+    .chrome{padding:10px 16px;font-size:9px;letter-spacing:.14em}
+    .pager span{width:12px}
+    .pager span.is-on{width:18px}
+    .chrome-right{gap:10px}
+    .fs-btn{padding:3px}
+    .fs-btn svg{width:12px;height:12px}
+
+    /* Cover — kill the +200px desktop shift, clean stack */
+    .s-cover .cover-stage{padding:80px 24px !important;gap:32px;justify-content:center}
+    .s-cover .cover-stage::before{display:none}
+    .s-cover .cover-emblem-bg{right:-100px;height:280px;opacity:.10}
+    .s-cover .cover-edition{font-size:16px}
+    .s-cover .cover-h{font-size:clamp(34px,9vw,52px);max-width:100%;letter-spacing:-.025em;line-height:1.15}
+    .s-cover .cover-foot{font-size:13px;gap:8px}
+    .s-cover .foot-row{gap:14px}
+    .s-cover .foot-label{min-width:72px;font-size:9px;letter-spacing:.14em}
+
+    /* Chairs — single column, vertical stack */
+    .s-chairs .stage{padding:60px 20px;justify-content:flex-start}
+    .s-chairs .eyebrow{font-size:10px;margin-bottom:20px}
+    .chairs-grid{grid-template-columns:1fr;gap:14px;align-content:start}
+    .chair-card{padding:22px 20px;border-radius:14px}
+    .card-logo{top:18px;right:18px}
+    .card-logo-wordmark{height:22px}
+    .card-logo-shield{height:36px}
+    .card-role{font-size:10px}
+    .card-name{font-size:32px;margin:6px 0 8px}
+    .card-meta{font-size:13px;gap:6px}
+    .card-tags{padding-top:14px;gap:6px}
+    .card-tags .tag{font-size:11px;padding:4px 9px}
+
+    /* Speakers — photo top, copy below */
+    .s-spk .stage{padding:0;display:block}
+    .spk-grid,.s-spk.flip .spk-grid{display:flex;flex-direction:column;height:100%}
+    .spk-photo{order:-1;height:38vh;flex:none}
+    .spk-photo img{width:100%;height:100%}
+    .spk-copy{padding:24px 22px 32px;flex:1}
+    .spk-copy .session{font-size:10px;margin-bottom:14px}
+    .spk-copy .name{font-size:64px;margin-bottom:14px}
+    .spk-copy .info{font-size:13px;margin-bottom:18px}
+    .spk-copy .spk-tags{gap:6px;margin-bottom:14px}
+    .spk-copy .spk-tags .tag{font-size:11px;padding:4px 9px}
+    .spk-copy .spk-desc{font-size:13px}
+    .spk-logo{top:14px;right:18px;height:26px;z-index:5}
+
+    /* Schedule — compress to 2-col with detail wrapping */
+    .s-schedule .stage{padding:60px 22px;justify-content:flex-start}
+    .s-schedule .eyebrow{font-size:10px;margin-bottom:24px}
+    .s-schedule .sch-row{grid-template-columns:54px 1fr;grid-template-rows:auto auto;gap:2px 12px;padding:11px 0;font-size:14px}
+    .s-schedule .sch-time{grid-row:1/3;align-self:start}
+    .s-schedule .sch-event{grid-column:2;grid-row:1}
+    .s-schedule .sch-detail{grid-column:2;grid-row:2;font-size:12px}
+    .s-schedule .sch-row.is-session{background:linear-gradient(90deg, oklch(64% 0.21 18 / .06), transparent 80%)}
+
+    /* Dinner — text top, QR below */
+    .s-dinner .stage{display:flex;flex-direction:column}
+    .dinner-bg{left:-120px;height:380px;opacity:.18}
+    .dinner-copy{padding:50px 22px 16px;flex:none}
+    .s-dinner .eyebrow{font-size:10px;margin-bottom:16px}
+    .s-dinner .dinner-name{font-size:38px !important;margin-bottom:22px;white-space:nowrap}
+    .s-dinner .dinner-meta{gap:8px}
+    .s-dinner .dinner-row{font-size:13px;gap:12px;line-height:1.4}
+    .s-dinner .dinner-label{min-width:60px;font-size:9px}
+    .dinner-qr{padding:16px 22px 50px;gap:14px;flex:1}
+    .dinner-qr .qr-img{width:240px;height:240px;padding:10px;border-radius:10px}
+    .dinner-qr .qr-tag{font-size:9px;letter-spacing:.18em}
+    .dinner-qr strong{font-size:14px}
+    .dinner-qr .qr-sub{font-size:11px}
+
+    /* Launch — smaller hero */
+    .s-launch .stage{padding:80px 24px}
+    .s-launch .eyebrow{font-size:10px;margin-bottom:18px}
+    .s-launch .launch-h{font-size:clamp(64px,18vw,108px) !important}
+    .s-launch .launch-divider{margin:30px 0}
+    .s-launch .launch-name{font-size:28px}
+    .s-launch .launch-role{font-size:13px}
+  }
+
+  /* Phone-specific tighter (≤ 480px) */
+  @media (max-width: 480px){
+    .s-cover .cover-h{font-size:34px;line-height:1.15}
+    .s-cover .cover-edition{font-size:15px}
+    .card-name{font-size:28px}
+    .spk-copy .name{font-size:48px}
+    .s-launch .launch-h{font-size:64px !important}
+    .dinner-qr .qr-img{width:200px;height:200px}
+  }
 </style>
 </head>
 <body>
