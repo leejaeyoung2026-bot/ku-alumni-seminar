@@ -370,6 +370,20 @@
 </head>
 <body>
 
+<!--
+  ═══════════════════════════════════════════════════════════════
+  TEMPLATE — 다음 세미나 준비 시 채울 항목
+  ═══════════════════════════════════════════════════════════════
+  · Slide 1 (cover):  [제 N회], [일시], [장소]
+  · Slide 2 (chairs): 지부장 변경 시 카드 내용 수정 (이재영/강대원 고정)
+  · Slide 3, 4 (speakers): [편명], [Speaker N], [학번 · 소속], 태그, 설명, 사진(img/speakerN.png), 회사 로고(img/xxx-logo.png)
+  · Slide 5 (schedule): 세션 시간 / 연자 / 편명, 저녁식사 식당명
+  · Slide 6 (dinner): [식당명], 주소, 이동·주차·예약자, QR 링크 + qr-map.png 재생성 (qrserver API)
+  · Slide 7 (launch): [Speaker 1] 정보
+  · OG 이미지(img/og.png), 회사 로고들(samyang/sk/msd)도 회차에 따라 교체
+  ═══════════════════════════════════════════════════════════════
+-->
+
 <div class="deck" id="deck">
 
   <!-- Persistent chrome -->
@@ -393,12 +407,12 @@
     <div class="stage cover-stage">
       <img src="img/emblem-shield.svg" alt="" class="cover-emblem-bg" aria-hidden="true">
       <div class="cover-title">
-        <div class="cover-edition">제 1회</div>
+        <div class="cover-edition">[제 N회]</div>
         <h1 class="cover-h">고대약대<br>회사·학계 지부 세미나</h1>
       </div>
       <footer class="cover-foot">
-        <div class="foot-row"><span class="foot-label">일시</span><span>2026년 5월 2일 (토) 15:00</span></div>
-        <div class="foot-row"><span class="foot-label">장소</span><span>용산역 4층 ITX 6 회의실</span></div>
+        <div class="foot-row"><span class="foot-label">일시</span><span>[일시]</span></div>
+        <div class="foot-row"><span class="foot-label">장소</span><span>[장소]</span></div>
         <div class="foot-row"><span class="foot-label">회사 지부장</span><span>이재영 · 09학번</span></div>
         <div class="foot-row"><span class="foot-label">학계 지부장</span><span>강대원 · 09학번</span></div>
       </footer>
@@ -451,18 +465,17 @@
     <div class="stage">
       <div class="spk-grid">
         <div class="spk-copy">
-          <img src="img/sk-logo.png" alt="" class="spk-logo" aria-hidden="true">
-          <div class="session">Session 1 · 대학원 편</div>
-          <h2 class="name"><span>정회윤</span></h2>
-          <div class="info"><strong>09학번</strong> &middot; SK바이오팜 책임연구원</div>
+          <!-- <img src="img/[company1-logo].png" alt="" class="spk-logo" aria-hidden="true"> -->
+          <div class="session">Session 1 · [편명]</div>
+          <h2 class="name"><span>[Speaker 1]</span></h2>
+          <div class="info"><strong>[학번]</strong> &middot; [소속]</div>
           <div class="spk-tags">
-            <span class="tag">#박사</span>
-            <span class="tag">#병역특례</span>
+            <!-- <span class="tag">#태그</span> -->
           </div>
-          <p class="spk-desc">대학원 진학과 연구자의 길,<br>그 이후의 커리어까지.</p>
+          <p class="spk-desc">[세션 한 줄 설명]</p>
         </div>
         <div class="spk-photo">
-          <img src="img/speaker2.png" alt="정회윤 연자" loading="eager">
+          <img src="img/speaker1.png" alt="Speaker 1 연자" loading="eager">
         </div>
       </div>
     </div>
@@ -473,18 +486,17 @@
     <div class="stage">
       <div class="spk-grid">
         <div class="spk-photo">
-          <img src="img/speaker1.png" alt="안아름 연자" loading="eager">
+          <img src="img/speaker2.png" alt="Speaker 2 연자" loading="eager">
         </div>
         <div class="spk-copy">
-          <img src="img/msd-logo.svg" alt="" class="spk-logo" aria-hidden="true">
-          <div class="session">Session 2 · 회사 편</div>
-          <h2 class="name"><span>안아름</span></h2>
-          <div class="info"><strong>12학번</strong> &middot; MSD MI팀</div>
+          <!-- <img src="img/[company2-logo].png" alt="" class="spk-logo" aria-hidden="true"> -->
+          <div class="session">Session 2 · [편명]</div>
+          <h2 class="name"><span>[Speaker 2]</span></h2>
+          <div class="info"><strong>[학번]</strong> &middot; [소속]</div>
           <div class="spk-tags">
-            <span class="tag">#국내사</span>
-            <span class="tag">#외자사</span>
+            <!-- <span class="tag">#태그</span> -->
           </div>
-          <p class="spk-desc">제약회사에서의 커리어 여정과<br>약대 졸업 후 회사생활 이야기.</p>
+          <p class="spk-desc">[세션 한 줄 설명]</p>
         </div>
       </div>
     </div>
@@ -496,34 +508,34 @@
       <div class="eyebrow">Program</div>
       <div class="schedule">
         <div class="sch-row">
-          <span class="sch-time">15:00</span>
+          <span class="sch-time">[시간]</span>
           <span class="sch-event">등록</span>
           <span class="sch-detail"></span>
         </div>
         <div class="sch-row">
-          <span class="sch-time">15:10</span>
+          <span class="sch-time">[시간]</span>
           <span class="sch-event">오프닝</span>
           <span class="sch-detail">지부장 인사</span>
         </div>
         <div class="sch-row is-session">
-          <span class="sch-time">15:15</span>
+          <span class="sch-time">[시간]</span>
           <span class="sch-event">Session 1</span>
-          <span class="sch-detail">정회윤 · 대학원 편</span>
+          <span class="sch-detail">[Speaker 1] · [편명]</span>
         </div>
         <div class="sch-row">
-          <span class="sch-time">16:00</span>
+          <span class="sch-time">[시간]</span>
           <span class="sch-event">Coffee Break</span>
           <span class="sch-detail"></span>
         </div>
         <div class="sch-row is-session">
-          <span class="sch-time">16:15</span>
+          <span class="sch-time">[시간]</span>
           <span class="sch-event">Session 2</span>
-          <span class="sch-detail">안아름 · 회사 편</span>
+          <span class="sch-detail">[Speaker 2] · [편명]</span>
         </div>
         <div class="sch-row">
-          <span class="sch-time">17:00</span>
+          <span class="sch-time">[시간]</span>
           <span class="sch-event">저녁식사 · 네트워킹</span>
-          <span class="sch-detail">코리안치킨클럽</span>
+          <span class="sch-detail">[식당명]</span>
         </div>
       </div>
     </div>
@@ -534,22 +546,22 @@
     <div class="stage">
       <img src="img/chicken.png" alt="" class="dinner-bg" aria-hidden="true">
       <div class="dinner-copy">
-        <div class="eyebrow">After Party · 17:00</div>
-        <h2 class="dinner-name">코리안치킨클럽</h2>
+        <div class="eyebrow">After Party · [시간]</div>
+        <h2 class="dinner-name">[식당명]</h2>
         <div class="dinner-meta">
-          <div class="dinner-row"><span class="dinner-label">주소</span><span>서울 용산구 한강대로21나길 40</span></div>
-          <div class="dinner-row"><span class="dinner-label">이동</span><span>용산역 1번 출구 → 도보 6분 (383m)</span></div>
-          <div class="dinner-row"><span class="dinner-label">주차</span><span>드래곤힐스파 주차장 이용 가능</span></div>
-          <div class="dinner-row"><span class="dinner-label">예약자</span><span>강대원</span></div>
+          <div class="dinner-row"><span class="dinner-label">주소</span><span>[주소]</span></div>
+          <div class="dinner-row"><span class="dinner-label">이동</span><span>[이동 안내]</span></div>
+          <div class="dinner-row"><span class="dinner-label">주차</span><span>[주차 안내]</span></div>
+          <div class="dinner-row"><span class="dinner-label">예약자</span><span>[예약자]</span></div>
         </div>
       </div>
       <div class="dinner-qr">
-        <a class="qr-link" href="https://map.naver.com/p/directions/3zh6ED,2AKvrw,%EC%9A%A9%EC%82%B0%EC%97%AD%20ITX6(%EC%A4%91%ED%9A%8C%EC%9D%98%EC%8B%A4),1923061358,PLACE_POI/3zh66n,2AKrjM,%EC%BD%94%EB%A6%AC%EC%95%88%EC%B9%98%ED%82%A8%ED%81%B4%EB%9F%BD,1989710660,PLACE_POI/-/walk?c=17.00,0,0,0,dh" target="_blank" rel="noopener" aria-label="네이버 지도 길찾기 열기">
+        <a class="qr-link" href="#" target="_blank" rel="noopener" aria-label="네이버 지도 길찾기 열기">
           <img src="img/qr-map.png" alt="네이버 지도 길찾기 QR" class="qr-img">
           <div class="qr-label">
             <span class="qr-tag">Tap / Scan</span>
             <strong>네이버 지도 길찾기</strong>
-            <span class="qr-sub">용산역 → 코리안치킨클럽 도보 경로</span>
+            <span class="qr-sub">[출발지] → [식당명] 도보 경로</span>
           </div>
         </a>
       </div>
@@ -563,8 +575,8 @@
       <h2 class="launch-h">Session 1<span class="dot">.</span></h2>
       <div class="launch-divider"></div>
       <div class="launch-info">
-        <div class="launch-name">정회윤</div>
-        <div class="launch-role">대학원 편 · 09학번 · SK바이오팜 책임연구원</div>
+        <div class="launch-name">[Speaker 1]</div>
+        <div class="launch-role">[편명] · [학번] · [소속]</div>
       </div>
     </div>
   </section>
